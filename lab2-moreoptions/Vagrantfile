@@ -1,0 +1,13 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-18.04"
+  config.vm.hostname = "vm1"
+  config.vm.network "private_network", ip: "192.168.56.1"
+  config.vm.synced_folder "../data", "/home/vagrant/data" # How we shared files within the vagrant directory  // it will copy this first directory (../data) 
+  #over to this destination directory on vagrant host
+  config.vm.provision "file", source: "./copiedfile.txt", destination: "/home/vagrant/copiedfile.txt" # copiedfile.txt file will push specific location within the VM
+
+  config.vm.provider :virtualbox do |vb| # some additional customization
+    vb.customize ["modifyvm", :id, "--memory", 1024]
+    vb.customize ["modifyvm", :id, "--cpus", 2]
+  end
+end
